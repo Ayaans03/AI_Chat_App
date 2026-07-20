@@ -2,12 +2,12 @@
 name = "ai-chat-app"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "Ayaans03",email = "ayaanshareef03@gmail.com"}
-]
+
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "fastapi (>=0.139.2,<0.140.0)",
+    "uvicorn (>=0.51.0,<0.52.0)"
 ]
 
 [tool.poetry]
