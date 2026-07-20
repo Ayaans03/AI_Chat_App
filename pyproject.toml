@@ -1,0 +1,18 @@
+[project]
+name = "ai-chat-app"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Ayaans03",email = "ayaanshareef03@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+]
+
+[tool.poetry]
+packages = [{include = "ai_chat_app", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
