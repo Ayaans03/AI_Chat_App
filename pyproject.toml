@@ -7,7 +7,8 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "fastapi (>=0.139.2,<0.140.0)",
-    "uvicorn (>=0.51.0,<0.52.0)"
+    "uvicorn (>=0.51.0,<0.52.0)",
+    "pydantic (>=2.13.4,<3.0.0)"
 ]
 
 [tool.poetry]
@@ -16,3 +17,6 @@ packages = [{include = "ai_chat_app", from = "src"}]
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[virtualenvs]
+in-project = true
