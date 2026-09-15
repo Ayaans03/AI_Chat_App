@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from app.schemas.chat import Message, Prompt
 from app.core.database import check_postgres_connection
 from app.services.llm_service import interaction
+from fastapi import HTTPException
 app = FastAPI()
 
 @app.get('/get_api')
@@ -19,5 +20,8 @@ def prompt_ai(data: Prompt):
 
 @app.get('/check-postgre-db')
 def progre_db():
-    status = check_postgres_connection()
-    return status
+    try:
+        status = check_postgres_connection()
+        return status
+    except HTTPException as e:
+        print(e)
