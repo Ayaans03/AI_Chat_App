@@ -1,9 +1,12 @@
 from sqlalchemy.orm import relationship,DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import String, DateTime, func
 from typing import List
+
+# Base class to register the schema
 class Base(DeclarativeBase):
     pass
 
+# User table to store the user details
 class User(Base):
     __tablename__ = "User"
 

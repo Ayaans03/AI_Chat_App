@@ -4,6 +4,7 @@ from app.models.user import Base
 from typing import List
 from app.models.message import Message
 
+# Conversation table act as junction table between user and message table
 class Conversation(Base):
     __tablename__ = "Conversation"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

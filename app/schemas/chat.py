@@ -1,12 +1,12 @@
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, ValidationError, PydanticUserError
 
-class Message(BaseModel):
-    post_message: str
-
-class Prompt(BaseModel):
+# Validation to request body to chat
+class Chat(BaseModel):
     text: str
 
 try:
-    Prompt()
+    Chat()
 except ValidationError as e:
+    print(repr(e.errors()[0]['type']))
+except PydanticUserError as e:
     print(repr(e.errors()[0]['type']))

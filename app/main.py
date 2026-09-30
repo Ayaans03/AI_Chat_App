@@ -1,27 +1,7 @@
 from fastapi import FastAPI
-from app.schemas.chat import Message, Prompt
-from app.core.database import check_postgres_connection
-from app.services.llm_service import interaction
-from fastapi import HTTPException
+from .routers import chat, database
+
 app = FastAPI()
 
-@app.get('/get_api')
-def read_root():
-    return {"Hello": "World"}
-
-@app.post('/message')
-def post_message(data: Message):
-    return data
-
-@app.post('/prompt')
-def prompt_ai(data: Prompt):
-    response = interaction(data.text)
-    return response
-
-@app.get('/check-postgre-db')
-def progre_db():
-    try:
-        status = check_postgres_connection()
-        return status
-    except HTTPException as e:
-        print(e)
+app.include_router(chat.router)
+app.include_router(database.router)

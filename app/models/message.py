@@ -2,6 +2,7 @@ from sqlalchemy import ForeignKey, func, String, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
 from app.models.user import Base
 
+# Message table to store users conversation with chatbot
 class Message(Base):
     __tablename__ = "Message"
     id : Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
