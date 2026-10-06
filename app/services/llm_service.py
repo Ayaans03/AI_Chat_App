@@ -1,6 +1,5 @@
 from google.genai import Client, errors
 from fastapi import HTTPException
-from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.core.database import engine
 from app.models.message import Message
