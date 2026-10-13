@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from app.services.database_service import check_postgres_connection, get_chat_hisotry_from_message_table
-from fastapi.responses import JSONResponse
 from fastapi import HTTPException
 from app.schemas.database import MessageResponse
+from fastapi.responses import JSONResponse
 
 router = APIRouter(
     prefix= "/database",
@@ -13,7 +13,7 @@ router = APIRouter(
 def postgre_db():
     try:
         status = check_postgres_connection()
-        return {"Message": "Connected to database s"}
+        return status
     except HTTPException as e:
         print(e)
 

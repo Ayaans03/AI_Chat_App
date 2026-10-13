@@ -5,6 +5,7 @@ class Settings(BaseSettings):
     postgres_connection_string : str
     jwt_secret_key : str
     algorithm : str
+    access_token_expire_minutes : int
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=False)
 
