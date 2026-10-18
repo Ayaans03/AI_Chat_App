@@ -27,12 +27,12 @@ def register_user(user_email: str, user_password: str):
 def user_login(user_email: str, user_password: str):
     try:
         with _engine_connect() as Connection:
-            email, password = Connection.execute(select(User.email, User.hased_password)).first()
+            user_id, email, password = Connection.execute(select(User.id, User.email, User.hased_password)).first()
             if email == user_email and  verify_password(user_password,password):
                 access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
                 refresh_token_expires = timedelta(hours=settings.refresh_token_expire_hours)
-                access_token = create_access_token(data= {"sub": email}, expires_delta=access_token_expires)
-                referesh_token = create_referesh_token(data= {"sub":email}, expires_delta=refresh_token_expires)
+                access_token = create_access_token(data= {"sub": email, "user_id": user_id}, expires_delta=access_token_expires)
+                referesh_token = create_referesh_token(data= {"sub":email, "user_id": user_id}, expires_delta=refresh_token_expires)
                 return {
                     "Access_token": access_token,
                     "Token_type": "Bearer",

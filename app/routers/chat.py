@@ -18,7 +18,7 @@ def chat_with_ai(data: Chat, Token: str = Depends(get_current_user)):
         request = chat_and_update_in_db(data.text)
         return JSONResponse(request)
     except HTTPException as e:
-        print(e)
+        raise e
 
 @router.get('/get_chat_history', response_model=list[MessageResponse])
 def chat_history():
@@ -26,4 +26,4 @@ def chat_history():
         history = get_chat_hisotry_from_message_table()
         return history
     except HTTPException as e:
-        print(e)
+        raise e

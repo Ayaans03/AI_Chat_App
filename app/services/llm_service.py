@@ -30,7 +30,7 @@ def chat_and_update_in_db(data: str):
         user = Message(
             role = "user",
             content = data,
-            conversation_id = 3
+            conversation_id = 4
         )
         session.add(user)
 
@@ -38,7 +38,7 @@ def chat_and_update_in_db(data: str):
         assistent = Message(
             role = "assistent",
             content = response,
-            conversation_id = 3
+            conversation_id = 4
             )
 
         session.add(assistent)
@@ -46,7 +46,7 @@ def chat_and_update_in_db(data: str):
         session.commit()
         return response
     except HTTPException as e:
-        print(e)
+        raise e
 
 def get_chat_hisotry_from_message_table():
     try:
@@ -55,4 +55,4 @@ def get_chat_hisotry_from_message_table():
             return result
 
     except HTTPException as e:
-        print(e)
+        raise e

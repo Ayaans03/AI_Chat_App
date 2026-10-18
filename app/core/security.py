@@ -58,8 +58,9 @@ def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     try:
         payload = decode_token(token)
         email = payload.get("sub")
+        user_id = payload.get("user_id")
         if email is None:
             raise credentials_exception
-        return email
+        return email, user_id
     except InvalidTokenError:
         raise credentials_exception
