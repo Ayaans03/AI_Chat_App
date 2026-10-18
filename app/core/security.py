@@ -29,6 +29,16 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     encode_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=ALGORITHM)
     return encode_jwt
 
-def jwt_decode(encoded):
-    decode = jwt.decode(encoded, JWT_SECRET_KEY, algorithm=ALGORITHM)
+def decode_token(token):
+    decode = jwt.decode(token, JWT_SECRET_KEY, algorithms=ALGORITHM)
     return decode
+
+def create_referesh_token(data:dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+            expire = datetime.now(timezone.utc) +  expires_delta 
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+    to_encode.update({"exp":expire, "token_type":"refresh"})
+    encode_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=ALGORITHM)
+    return encode_jwt
