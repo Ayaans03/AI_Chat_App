@@ -13,4 +13,4 @@ def postgre_db():
         status = check_postgres_connection()
         return status
     except HTTPException as e:
-        print(e)
+        raise e

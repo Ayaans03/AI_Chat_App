@@ -9,4 +9,4 @@ def check_postgres_connection():
             Connection.execute(select(1)).all()
             return {"Message": "Connected to databases"}
     except HTTPException as e:
-        print(e)
+        raise e

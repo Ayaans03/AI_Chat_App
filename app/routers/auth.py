@@ -16,7 +16,7 @@ def register(data: User):
         request = register_user(data.email, data.password)
         return JSONResponse(request)
     except HTTPException as e:
-        print(e)
+        raise e
 
 @router.post("/login", response_model=list[Token])
 def login(data: User):

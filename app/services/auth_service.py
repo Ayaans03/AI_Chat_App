@@ -21,7 +21,7 @@ def register_user(user_email: str, user_password: str):
         session.commit()
         return {"Message": "User is been registered"}
     except HTTPException as e:
-        print(e)
+        raise e
 
 
 def user_login(user_email: str, user_password: str):

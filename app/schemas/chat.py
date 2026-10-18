@@ -3,6 +3,10 @@ from pydantic import BaseModel, ValidationError, PydanticUserError
 # Validation to request body to chat
 class Chat(BaseModel):
     text: str
+    conversation_id : int
+
+class Chat_Response(BaseModel):
+    output_text : str
 
 try:
     Chat()

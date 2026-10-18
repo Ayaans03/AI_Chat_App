@@ -24,21 +24,21 @@ def initialize_llm(data):
         raise HTTPException(status_code=[i for i in range(400,600)])
 
 # Logic to chat and insert the conversation history in the message table
-def chat_and_update_in_db(data: str):
+def chat_and_update_in_db(prompt: str, converstaion_id: int):
     try:
         session = Session(engine)
         user = Message(
             role = "user",
-            content = data,
-            conversation_id = 4
+            content = prompt,
+            conversation_id = converstaion_id
         )
         session.add(user)
 
-        response = initialize_llm(data)
+        response = initialize_llm(prompt)
         assistent = Message(
             role = "assistent",
             content = response,
-            conversation_id = 4
+            conversation_id = converstaion_id
             )
 
         session.add(assistent)
