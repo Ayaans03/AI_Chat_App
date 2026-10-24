@@ -9,19 +9,39 @@ from app.core.database import engine
 from app.models.message import Message
 from app.core.database import _engine_connect
 from sqlalchemy import select
+from google.genai import types
 
 client = Client(api_key=settings.gemini_api_key)
 
-# LLM function so that it can be used by all
-def initialize_llm(data):
+def get_chat_history_from_message_table(conversation_id):
     try:
-        interact = client.interactions.create(
-            model="gemini-2.5-flash",
-            input=data
+        with _engine_connect() as Connection:
+            result = Connection.execute(select(Message).where(Message.conversation_id==conversation_id).order_by(Message.created_at.asc()).offset(offset=0).limit(limit=10)).all()
+            return result
+
+    except HTTPException as e:
+        raise e
+
+# LLM function so that it can be used by all
+def initialize_llm(data, conversation_id: int):
+    try:
+        history_list = []
+        conv_history=get_chat_history_from_message_table(conversation_id)
+
+        for msg_history in conv_history:
+            history_list.append(types.Content(
+                role=msg_history.role,
+                parts=[types.Part.from_text(text=msg_history.content)]
+            ))
+
+        interact = client.chats.create(
+            model="gemini-3.5-flash-lite",
+            history=history_list
         )
-        return interact.output_text
-    except [errors.ClientError, errors.ServerError] as e:
-        raise HTTPException(status_code=[i for i in range(400,600)])
+        response = interact.send_message(data)
+        return response.candidates[0].content.parts[0].text
+    except (errors.ClientError, errors.ServerError) as e:
+        raise e
 
 # Logic to chat and insert the conversation history in the message table
 def chat_and_update_in_db(prompt: str, converstaion_id: int):
@@ -32,27 +52,18 @@ def chat_and_update_in_db(prompt: str, converstaion_id: int):
             content = prompt,
             conversation_id = converstaion_id
         )
-        session.add(user)
 
-        response = initialize_llm(prompt)
+        response = initialize_llm(prompt, converstaion_id)
         assistent = Message(
-            role = "assistent",
+            role = "model",
             content = response,
             conversation_id = converstaion_id
             )
 
+        session.add(user)
         session.add(assistent)
-
         session.commit()
         return response
-    except HTTPException as e:
-        raise e
-
-def get_chat_hisotry_from_message_table():
-    try:
-        with _engine_connect() as Connection:
-            result = Connection.execute(select(Message).order_by(Message.id.asc()).offset(offset=0).limit(limit=100)).all()
-            return result
 
     except HTTPException as e:
         raise e
