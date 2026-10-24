@@ -27,7 +27,7 @@ def register_user(user_email: str, user_password: str):
 def user_login(user_email: str, user_password: str):
     try:
         with _engine_connect() as Connection:
-            user_id, email, password = Connection.execute(select(User.id, User.email, User.hased_password)).first()
+            user_id, email, password = Connection.execute(select(User.id, User.email, User.hased_password).where(User.email == user_email)).first()
             if email == user_email and  verify_password(user_password,password):
                 access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
                 refresh_token_expires = timedelta(hours=settings.refresh_token_expire_hours)
