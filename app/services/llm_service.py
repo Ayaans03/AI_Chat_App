@@ -1,13 +1,11 @@
 from google.genai import Client, errors
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from app.core.database import engine
 from app.models.message import Message
 from app.models.conversation import Conversation # import to recognized relationship for message and conversation table by the prompt_ai function
 from app.core.config import settings
-from app.core.database import engine
+from app.core.database import engine, _engine_connect
 from app.models.message import Message
-from app.core.database import _engine_connect
 from sqlalchemy import select
 from google.genai import types
 
