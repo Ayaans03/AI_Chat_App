@@ -5,16 +5,20 @@ from sqlalchemy import pool
 
 from alembic import context
 
+# Adding these tables import for alembic to recognize they exist to help migrate to db
 from app.models.user import Base, User
 from app.models.conversation import Conversation
 from app.models.message import Message
-from app.core.database import POSTGRES_CONNECTION_STRING
+from app.models.document import Document_Chunks
+from app.core.config import settings
+import pgvector
+from sqlalchemy.engine import Connection
 
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-config.set_main_option('sqlalchemy.url',POSTGRES_CONNECTION_STRING)
+config.set_main_option('sqlalchemy.url',settings.postgres_connection_string)
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
@@ -77,6 +81,17 @@ def run_migrations_online() -> None:
         with context.begin_transaction():
             context.run_migrations()
 
+def do_run_migration(connection: Connection) -> None:
+    # alembic do not recognize the vector type so adding this
+    connection.dialect.ischema_names['vector'] = pgvector.sqlalchemy.Vector
+
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+    )
+
+    with context.begin_transaction():
+        context.run_migrations()
 
 if context.is_offline_mode():
     run_migrations_offline()

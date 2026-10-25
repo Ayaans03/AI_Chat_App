@@ -16,4 +16,3 @@ def rate_limiting(Token: tuple = Depends(get_current_user)):
         redis_db.expire(key,TIME_WINDOW)
     if count > MAX_REQUEST:
         raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail= "Total Request has been exceed, Please try again later")
-    
