@@ -1,15 +1,13 @@
-from google.genai import Client, errors
+from google.genai import errors
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models.message import Message
 from app.models.conversation import Conversation # import to recognized relationship for message and conversation table by the prompt_ai function
-from app.core.config import settings
 from app.core.database import engine, _engine_connect
 from app.models.message import Message
 from sqlalchemy import select
 from google.genai import types
-
-client = Client(api_key=settings.gemini_api_key)
+from app.core.google_genai import client
 
 def get_chat_history_from_message_table(conversation_id):
     try:
