@@ -40,9 +40,7 @@ def chunk_embedding_insert(text: str):
             )
 
             document_db.append(result)
-
         session.add_all(document_db)
         session.commit()
-        return {"status": "Success", "inserted_count": len(document_db)}
     except HTTPException as e:
         raise e
