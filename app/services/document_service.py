@@ -2,7 +2,7 @@ from google.genai import types
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from app.models.document import Document_Chunks
-from app.core.database import engine, _engine_connect
+from app.core.database import engine
 from app.core.google_genai import client
 
 def _chunk_and_overlap_text(text: str):
