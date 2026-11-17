@@ -24,9 +24,11 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root
 
 COPY . .
+RUN chmod +x /usr/local/app/entrypoint.sh
+
 EXPOSE 8000
 
 RUN useradd app
 USER app
 
-CMD [ "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000" ]
+ENTRYPOINT [ "/usr/local/app/entrypoint.sh" ]
