@@ -6,7 +6,6 @@ from contextlib import contextmanager # allows to allocate and release resources
 
 engine = create_engine(settings.postgres_connection_string)
 Base.metadata.create_all(bind=engine)
-print("Database initialized")
 
 # helper function to open connect
 @contextmanager
